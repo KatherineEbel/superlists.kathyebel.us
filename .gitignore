@@ -1,5 +1,5 @@
 db.sqlite3
-db.geckodriver.log
+geckodriver.log
 virtualenv
 .DS_STORE
 .idea
