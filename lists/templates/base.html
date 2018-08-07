@@ -12,8 +12,8 @@
             <div class="col-md-6 offset-3 jumbotron">
                 <div class="text-center">
                     <h1>{% block header_text %}{% endblock %}</h1>
-                    <form method="POST" action="{%  block form_action %}{% endblock %}">
-                        <input class="form-control-lg" type="text" id="id_new_item" name="item_text" placeholder="Enter a to-do item">
+                    <form method="POST" action="{% block form_action %}{% endblock %}">
+                        {{ form.text }}
                         {% csrf_token %}
                         {% if error %}
                             <div class="form-group has-error">
