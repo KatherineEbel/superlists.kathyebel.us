@@ -1,0 +1,22 @@
+[Unit]
+Description=gunicorn-DOMAIN-staging daemon
+Requires=gunicorn-DOMAIN-staging.socket
+After=network.target
+
+[Service]
+Restart=on-failure
+User=kathy
+Group=www-data
+WorkingDirectory=/home/kathy/sites/DOMAIN-staging.kathyebel.us
+EnvironmentFile=/home/kathy/sites/DOMAIN-staging.kathyebel.us/.env
+
+ExecStart=/home/kathy/sites/DOMAIN-staging.kathyebel.us/virtualenv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn-DOMAIN-staging.socket \
+          DOMAIN.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+
