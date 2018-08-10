@@ -1,5 +1,4 @@
-import sys
-
+import os
 from django.contrib import messages, auth
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
@@ -20,7 +19,8 @@ def send_login_email(request):
     send_mail(
         'Your login link for Superlists',
         message_body,
-        'noreply@superlists',
+        # TODO: need to add to env file
+        os.environ.get('FROM_EMAIL'),
         [email],
     )
 
@@ -35,4 +35,9 @@ def login(request):
     user = auth.authenticate(request.GET.get('token'))
     if user:
         auth.login(request, user)
+    return redirect('/')
+
+
+def logout(request):
+    auth.logout(request)
     return redirect('/')
