@@ -4,29 +4,31 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>To-Do lists</title>
-        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+{#        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">#}
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     </head>
     <body>
-    <div class="container">
-        <div class="navbar navbar-expand navbar-light bg-light" role="navigation">
-            <div class="container-fluid">
-                <a href="/" class="navbar-brand">Superlists</a>
-                {% if user.email %}
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="navbar-text">
-                            Logged in as {{ user.email }}
-                        </li>
-                        <li><a href="#">Log Out</a></li>
-                    </ul>
-                {% else %}
-                    <form method="post" action="{% url 'send_login_email' %}" class="form-inline float-right">
-                        <label for="email">Enter an email to log in:</label>
-                        <input type="text" name="email" id="email">
-                        {% csrf_token %}
-                    </form>
-                {% endif %}
-            </div>
-        </div>
+    <div class="navbar fixed-top navbar-expand navbar-light bg-light justify-content-between" role="navigation">
+        <a href="/" class="navbar-brand">Superlists</a>
+        {% if user.email %}
+            <ul class="nav navbar-nav navbar-right align-items-center">
+                <li class="navbar-text mr-5">
+                    Logged in as {{ user.email }}
+                </li>
+                <li><a class="btn btn-outline-primary" href="{% url 'logout' %}">Log Out</a></li>
+            </ul>
+        {% else %}
+            <form method="post" action="{% url 'send_login_email' %}" class="form-inline">
+                <label for="email">Enter an email to log in:</label>
+                <input type="text" name="email" id="email">
+                {% csrf_token %}
+            </form>
+        {% endif %}
+    </div>
+    <div class="container-fluid mt-5">
         {% if messages %}
             <div class="row">
                 <div class="col-md-8">
@@ -42,7 +44,7 @@
             </div>
         {% endif %}
         <div class="row">
-            <div class="col-md-6 offset-3 jumbotron">
+            <div class="col-md-6 offset-3 jumbotron mt-5">
                 <div class="text-center">
                     <h1>{% block header_text %}{% endblock %}</h1>
                     <form method="POST" action="{% block form_action %}{% endblock %}">
@@ -66,7 +68,7 @@
             {% endblock %}
         </div>
     </div>
-    <script src="/static/jquery-3.3.1.min.js"></script>
+{#    <script src="/static/jquery-3.3.1.min.js"></script>#}
     <script src="/static/list.js"></script>
     <script>
         $(document).ready(() => {
