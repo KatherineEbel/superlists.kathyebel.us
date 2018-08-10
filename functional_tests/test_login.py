@@ -4,7 +4,7 @@ import re
 
 from .base import FunctionalTest
 
-TEST_EMAIL = 'kathyebel@me.com'
+TEST_EMAIL = 'edith@example.com'
 SUBJECT = 'Your login link for Superlists'
 
 
@@ -45,5 +45,5 @@ class LoginTest(FunctionalTest):
             lambda: self.browser.find_elements_by_link_text('Log out')
         )
 
-        navbar = self.browser.find_element_by_css_selector('.navbar')
+        navbar = self.browser.find_element_by_css_selector('.navbar-nav')
         self.assertIn(TEST_EMAIL, navbar.text)
