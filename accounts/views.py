@@ -11,6 +11,7 @@ CHECK_EMAIL_MESSAGE = "Check your email, we've sent you a link you can use to lo
 
 def send_login_email(request):
     email = request.POST['email']
+    from_email = os.environ.get('FROM_EMAIL')
     token = Token.objects.create(email=email)
     url = request.build_absolute_uri(
         reverse('login') + '?token=' + str(token.uid)
@@ -19,8 +20,7 @@ def send_login_email(request):
     send_mail(
         'Your login link for Superlists',
         message_body,
-        # TODO: need to add to env file
-        os.environ.get('FROM_EMAIL'),
+        from_email,
         [email],
     )
 
