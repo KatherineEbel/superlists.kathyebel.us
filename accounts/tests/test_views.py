@@ -3,6 +3,7 @@ from unittest.mock import patch, call
 
 from accounts.models import Token
 from accounts.views import CHECK_EMAIL_MESSAGE
+import os
 
 
 class SendLoginEmailViewTest(TestCase):
@@ -27,7 +28,7 @@ class SendLoginEmailViewTest(TestCase):
         self.assertTrue(mock_send_email.called, True)
         (subject, body, from_email, to_list), kwargs = mock_send_email.call_args
         self.assertEqual(subject, 'Your login link for Superlists')
-        self.assertEqual(from_email, 'noreply@superlists.com')
+        self.assertEqual(from_email, os.environ.get('FROM_EMAIL'))
         self.assertEqual(to_list, ['edith@example.com'])
 
     def test_adds_success_message(self):
