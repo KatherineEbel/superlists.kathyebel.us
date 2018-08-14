@@ -1,6 +1,6 @@
 window.Superlists = {};
-window.Superlists.initialize = () => {
-    $('input[name="text"]').on('keypress', () => {
+window.Superlists.initialize = function () {
+    $('input[name="text"]').on('keypress', function () {
         $('.alert-danger').hide()
     });
 };
