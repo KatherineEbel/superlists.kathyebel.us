@@ -1,4 +1,5 @@
 /* global phantom:false, require:false, console:false, window:false, QUnit:false */
+/*  from github QUnit Test Runner */
 
 (function () {
     'use strict';
