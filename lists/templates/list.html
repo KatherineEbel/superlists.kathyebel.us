@@ -3,6 +3,7 @@
 {% block header_text %}Your To-Do list{% endblock %}
 {% block form_action %}{% url 'view_list' list.id %}{% endblock %}
 {% block table %}
+    <h3 id="id_list_owner">{{ list.owner }}</h3>
     <table class="table" id="id_list_table">
         {% for item in list.item_set.all %}
             <tr>
@@ -10,4 +11,22 @@
             </tr>
         {% endfor %}
     </table>
+{% endblock %}
+{% block extra_content %}
+    {% if user.email %}
+        <form method="post" action="{% url 'share' list.id %}" class="form-inline">
+            <label for="sharee">Enter an email to share your list:</label>
+            <input type="text" name="sharee" id="sharee" placeholder="your-friend@example.com">
+            {% csrf_token %}
+        </form>
+    {% endif %}
+    {% if list.shared_with.count %}
+        <h2>List shared with:</h2>
+        <ul class="list-sharee">
+            {% for user in list.shared_with.all %}
+                <li>{{ user.email }}</li>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
 {% endblock %}

@@ -31,7 +31,7 @@ class SharingTest(FunctionalTest):
         share_box = list_page.get_share_box()
 
         self.assertEqual(
-            share_box.get_attribure('placeholder'),
+            share_box.get_attribute('placeholder'),
             'your-friend@example.com'
         )
 
@@ -39,12 +39,12 @@ class SharingTest(FunctionalTest):
         # The page updates to say that it's shared with Oniciferous:
         list_page.share_list_with('oniciferous@example.com')
 
-        #Oniciferous now goes to the lists page with his browser
+        # Oniciferous now goes to the lists page with his browser
         self.browser = oni_browser
         MyListsPage(self).go_to_my_lists_page()
 
         # He sees Edith's list in there!
-        self.browser.find_elements_by_link_text('Get help').click()
+        self.browser.find_element_by_link_text('Get help').click()
 
         # The list page Oniciferous can see, says that it's Edith's list
         self.wait_for(lambda: self.assertEqual(

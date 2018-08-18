@@ -11,7 +11,7 @@ class ListModelTest(TestCase):
         list_ = List.objects.create()
         self.assertEqual(list_.get_absolute_url(), f'/lists/{list_.id}/')
 
-    def test_create_new_creates_list_and_ifrst_item(self):
+    def test_create_new_creates_list_and_first_item(self):
         List.create_new(first_item_text='new item text')
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, 'new item text')
@@ -27,6 +27,18 @@ class ListModelTest(TestCase):
         Item.objects.create(list=list_, text='first item')
         Item.objects.create(list=list_, text='second item')
         self.assertEqual(list_.name, 'first item')
+
+    def test_list_has_shared_with_method(self):
+        list_ = List.create_new('new item')
+        self.assertTrue(hasattr(list_, 'shared_with'))
+
+    def test_shared_with_will_contain_user_if_email_in_queryset(self):
+        user = User.objects.create(email='edith@example.com')
+        list_ = List.create_new('new item')
+        list_.shared_with.add(user)
+        sharee = list_.shared_with.all().get(email=user.email)
+        self.assertEqual(sharee, user)
+
 
     @staticmethod
     def test_lists_can_have_owners():

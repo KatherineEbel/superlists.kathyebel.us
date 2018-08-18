@@ -13,6 +13,53 @@ from lists.views import new_list
 User = get_user_model()
 
 
+class ShareListTest(TestCase):
+    def test_post_redirects_to_lists_page(self):
+        user = User.objects.create(pk='edith@example.com')
+        list_ = List.create_new('first item text')
+        list_ = List.objects.create()
+        response = self.client.post(
+            f'/lists/{list_.id}/share/',
+            data={'sharee': user.email}
+        )
+        self.assertRedirects(response, f'/lists/{list_.id}/')
+
+    def test_sharee_added_to_list_shared_with_all(self):
+        user = User.objects.create(pk='edith@example.com')
+        list_ = List.create_new('first item text')
+        response = self.client.post(
+            f'/lists/{list_.id}/share/',
+            data={
+                'sharee': user.email
+            })
+        sharee = list_.shared_with.all().get(email=user.email)
+        self.assertEqual(user, sharee)
+
+    def test_my_list_page_displays_lists_shared_with_current_user(self):
+        owner = User.objects.create(pk='oniciferous@example.com')
+        sharee = User.objects.create(pk='edith@example.com')
+        list_ = List.create_new('first item text', owner=owner)
+        self.client.post(
+            f'/lists/{list_.id}/share/',
+            data={
+                'sharee': sharee.email
+            })
+        response = self.client.get(f'/lists/users/{sharee.email}')
+        self.assertContains(response, owner.email)
+
+    def test_lists_page_shows_emails_of_users_that_list_shared_with(self):
+        owner = User.objects.create(pk='oniciferous@example.com')
+        sharee = User.objects.create(pk='edith@example.com')
+        list_ = List.create_new('first item text', owner=owner)
+        self.client.post(
+            f'/lists/{list_.id}/share/',
+            data={
+                'sharee': sharee.email
+            })
+        response = self.client.get(f'/lists/{list_.id}/')
+        self.assertContains(response, sharee.email)
+
+
 class HomePage(TestCase):
     def test_uses_home_template(self):
         response = self.client.get('/')

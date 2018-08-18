@@ -6,7 +6,12 @@ from django.urls import reverse
 
 class List(models.Model):
     owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=CASCADE
+        settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=CASCADE,
+        related_name='lists'
+    )
+    shared_with = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='shared_lists'
     )
 
     @property
